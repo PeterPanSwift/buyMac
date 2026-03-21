@@ -22,6 +22,8 @@
       --air: #7ca8c8;
       --pro: #385f8d;
       --neo: #4a9a7e;
+      --mini: #68707b;
+      --imac: #c96b56;
       --shadow: 0 28px 80px rgba(7, 12, 27, 0.22);
     }
 
@@ -428,11 +430,11 @@
       transition: transform 180ms ease;
     }
 
-    .pricing-switch input:checked + .pricing-switch-track {
+    .pricing-switch input:checked+.pricing-switch-track {
       background: linear-gradient(180deg, #e7c777, #cfa04a);
     }
 
-    .pricing-switch input:checked + .pricing-switch-track::before {
+    .pricing-switch input:checked+.pricing-switch-track::before {
       transform: translateX(20px);
     }
 
@@ -898,14 +900,19 @@
   </main>
 
   <script>
-    const FAMILY_ORDER = { "macbook-neo": 0, "macbook-air": 1, "macbook-pro": 2 };
+    const FAMILY_ORDER = { "macbook-neo": 0, "macbook-air": 1, "macbook-pro": 2, "mac-mini": 3, "imac": 4 };
     const FAMILY_TONES = {
       "macbook-air": "var(--air)",
       "macbook-pro": "var(--pro)",
       "macbook-neo": "var(--neo)",
+      "mac-mini": "var(--mini)",
+      "imac": "var(--imac)",
     };
+    const DESKTOP_FAMILY_SLUGS = new Set(["mac-mini", "imac"]);
     const CHIP_IMAGE_MAP = {
       "A18 Pro": "./image/A18%20Pro.png",
+      "M4": "./image/M4.png",
+      "M4 Pro": "./image/M4%20Pro.png",
       "M5": "./image/M5.png",
       "M5 Pro": "./image/M5%20Pro.png",
       "M5 Max": "./image/M5%20Max.png",
@@ -967,6 +974,7 @@
       sort: "price-asc",
       budget: null,
       educationPricing: false,
+      laptopsOnly: true,
       compare: {
         left: null,
         right: null,
@@ -1105,11 +1113,15 @@
         neo: "MacBook Neo",
         air: "MacBook Air",
         pro: "MacBook Pro",
+        mini: "Mac mini",
+        imac: "iMac",
       };
       const familySlugMap = {
         neo: "macbook-neo",
         air: "macbook-air",
         pro: "macbook-pro",
+        mini: "mac-mini",
+        imac: "imac",
       };
       const sourceUrlMap = new Map(
         Array.isArray(raw?.來源)
@@ -1161,7 +1173,7 @@
           name: familyName,
           price,
           educationPrice: Number.isFinite(educationPrice) ? educationPrice : price,
-          screenSize: product?.螢幕尺寸 ? `${String(product.螢幕尺寸).trim()} 吋` : "",
+          screenSize: normalizeScreenSize(product?.螢幕尺寸),
           chip: String(product?.["CPU 型號"] || "").trim(),
           cpuGpu: formatCpuGpuLabel(product?.["CPU/GPU 數量"]),
           color: "",
@@ -1203,6 +1215,17 @@
       }
 
       return `${match[1]}C CPU / ${match[2]}C GPU`;
+    }
+
+    function normalizeScreenSize(value) {
+      const normalized = String(value || "").trim();
+      if (!normalized) {
+        return "";
+      }
+      if (normalized === "無") {
+        return "桌上型";
+      }
+      return /^\d+(?:\.\d+)?$/.test(normalized) ? `${normalized} 吋` : normalized;
     }
 
     function enrichDerivedSpecs(data) {
@@ -1297,7 +1320,6 @@
         state.sort = event.target.value;
         renderResults();
       });
-
     }
 
     function render() {
@@ -1327,8 +1349,9 @@
     }
 
     function renderSummary() {
-      const low = Math.min(...state.data.families.map((family) => getFamilyLowPrice(family)));
-      const high = Math.max(...state.data.families.map((family) => getFamilyHighPrice(family)));
+      const families = getDisplayFamilies();
+      const low = Math.min(...families.map((family) => getFamilyLowPrice(family)));
+      const high = Math.max(...families.map((family) => getFamilyHighPrice(family)));
 
       const metrics = [
         { label: "最低入手價", value: formatPrice(low) },
@@ -1355,10 +1378,27 @@
               </span>
             </label>
           </article>
+          <article class="metric-card is-toggle">
+            <label class="pricing-switch" for="laptopOnlyToggle">
+              <input id="laptopOnlyToggle" type="checkbox"${state.laptopsOnly ? " checked" : ""}>
+              <span class="pricing-switch-track" aria-hidden="true"></span>
+              <span class="pricing-switch-copy">
+                <span class="pricing-switch-title">只顯示筆電</span>
+                <span class="pricing-switch-note">關掉時才會顯示 Mac mini 與 iMac</span>
+              </span>
+            </label>
+          </article>
         `;
 
       els.summaryGrid.querySelector("#educationToggle")?.addEventListener("change", (event) => {
         state.educationPricing = event.target.checked;
+        render();
+      });
+      els.summaryGrid.querySelector("#laptopOnlyToggle")?.addEventListener("change", (event) => {
+        state.laptopsOnly = event.target.checked;
+        if (state.laptopsOnly && isDesktopFamilySlug(state.family)) {
+          state.family = "all";
+        }
         render();
       });
     }
@@ -1366,7 +1406,7 @@
     function renderFamilyCards() {
       const comparableFamilies = getComparableFamilies();
 
-      els.familyGrid.innerHTML = sortFamilies(state.data.families)
+      els.familyGrid.innerHTML = sortFamilies(getDisplayFamilies())
         .map((family) => {
           const tone = FAMILY_TONES[family.slug] || "var(--accent)";
           const comparableFamily = comparableFamilies.find((entry) => entry.slug === family.slug);
@@ -1384,7 +1424,11 @@
     }
 
     function renderFamilyFilters() {
-      const options = [{ slug: "all", family: "全部系列" }, ...sortFamilies(state.data.families)];
+      const families = sortFamilies(getDisplayFamilies());
+      const options = [{ slug: "all", family: "全部系列" }, ...families];
+      if (state.family !== "all" && !families.some((family) => family.slug === state.family)) {
+        state.family = "all";
+      }
       els.familyFilters.innerHTML = options
         .map((option) => {
           const isActive = state.family === option.slug;
@@ -1760,7 +1804,7 @@
     }
 
     function getAllItems() {
-      return state.data.families.flatMap((family) =>
+      return getDisplayFamilies().flatMap((family) =>
         family.items.map((item) => ({
           ...item,
           family: family.family,
@@ -1811,7 +1855,7 @@
     }
 
     function getComparableFamilies() {
-      return sortFamilies(state.data.families).map((family) => ({
+      return sortFamilies(getDisplayFamilies()).map((family) => ({
         ...family,
         items: groupComparableItems(
           family.items.map((item) => ({
@@ -1825,6 +1869,17 @@
 
     function getComparableItems() {
       return getComparableFamilies().flatMap((family) => family.items);
+    }
+
+    function getDisplayFamilies() {
+      if (!state.data?.families) {
+        return [];
+      }
+      return state.data.families.filter((family) => !state.laptopsOnly || !isDesktopFamilySlug(family.slug));
+    }
+
+    function isDesktopFamilySlug(familySlug) {
+      return DESKTOP_FAMILY_SLUGS.has(String(familySlug || "").trim());
     }
 
     function sortFamilies(families) {
@@ -1974,7 +2029,13 @@
       if (normalized === "標準顯示器") {
         return 1;
       }
+      if (normalized === "標準玻璃") {
+        return 1;
+      }
       if (normalized === "奈米紋理顯示器") {
+        return 2;
+      }
+      if (normalized === "奈米紋理玻璃") {
         return 2;
       }
       return 9;

@@ -78,6 +78,10 @@ def pro_chip_slug(cpu_model: str) -> str:
     return f"apple-{model}-晶片"
 
 
+def simple_chip_slug(cpu_model: str) -> str:
+    return f"{cpu_model.strip().lower().replace(' ', '-')}-晶片"
+
+
 def urls_match(left: str, right: str) -> bool:
     left_parts = urlsplit(left)
     right_parts = urlsplit(right)
@@ -123,6 +127,26 @@ def build_product_url(item: dict[str, Any]) -> str:
             f"{cpu_cores}-核心-cpu-{gpu_cores}-核心-gpu-"
             f"{memory}-記憶體-{storage}-儲存裝置"
         )
+
+    if product_code == "mini":
+        chip = simple_chip_slug(item["CPU 型號"])
+        return (
+            "https://www.apple.com/tw/shop/buy-mac/mac-mini/"
+            f"{chip}-{cpu_cores}-核心-cpu-{gpu_cores}-核心-gpu-"
+            f"{memory}-記憶體-{storage}-儲存裝置"
+        )
+
+    if product_code == "imac":
+        chip = simple_chip_slug(item["CPU 型號"])
+        base_url = (
+            "https://www.apple.com/tw/shop/buy-mac/imac/"
+            f"{size}-吋-silver-{chip}-{cpu_cores}-核心-cpu-{gpu_cores}-核心-gpu-"
+            f"{memory}-記憶體-{storage}-儲存裝置"
+        )
+        display = item["顯示器選項"].strip()
+        if cpu_cores == "8" and gpu_cores == "8":
+            return f"{base_url}-立架"
+        return f"{base_url}-{display}-立架"
 
     raise ValueError(f"不支援的產品代號: {product_code}")
 
