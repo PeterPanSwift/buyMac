@@ -1,0 +1,1993 @@
+<!doctype html>
+<html lang="zh-Hant">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mac 價格比較</title>
+  <style>
+    :root {
+      --bg-top: #10203c;
+      --bg-mid: #1f3459;
+      --bg-bottom: #efe0bc;
+      --panel: rgba(255, 248, 235, 0.72);
+      --panel-strong: rgba(255, 249, 240, 0.9);
+      --line: rgba(255, 237, 205, 0.18);
+      --ink: #1f1a17;
+      --muted: #6d5a47;
+      --accent: #d9a441;
+      --accent-soft: rgba(217, 164, 65, 0.16);
+      --star: rgba(255, 247, 214, 0.92);
+      --rose: #cd6d62;
+      --air: #7ca8c8;
+      --pro: #385f8d;
+      --neo: #4a9a7e;
+      --shadow: 0 28px 80px rgba(7, 12, 27, 0.22);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      font-family: "Avenir Next", "PingFang TC", "Noto Sans TC", sans-serif;
+      background:
+        radial-gradient(circle at 12% 10%, rgba(255, 244, 201, 0.2), transparent 16%),
+        radial-gradient(circle at 85% 16%, rgba(255, 255, 255, 0.12), transparent 12%),
+        radial-gradient(circle at 50% -10%, rgba(255, 226, 167, 0.2), transparent 28%),
+        linear-gradient(180deg, var(--bg-top) 0%, var(--bg-mid) 32%, #a87853 68%, var(--bg-bottom) 100%);
+    }
+
+    body::before,
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    body::before {
+      background:
+        radial-gradient(circle at 10% 18%, var(--star) 0 1px, transparent 1.8px),
+        radial-gradient(circle at 24% 8%, rgba(255, 247, 214, 0.78) 0 1.2px, transparent 2px),
+        radial-gradient(circle at 34% 20%, rgba(255, 247, 214, 0.75) 0 1px, transparent 1.8px),
+        radial-gradient(circle at 61% 12%, rgba(255, 247, 214, 0.82) 0 1px, transparent 2px),
+        radial-gradient(circle at 74% 9%, rgba(255, 247, 214, 0.72) 0 1.1px, transparent 1.9px),
+        radial-gradient(circle at 88% 18%, rgba(255, 247, 214, 0.84) 0 1.2px, transparent 2px);
+      opacity: 0.7;
+    }
+
+    body::after {
+      background:
+        radial-gradient(circle at 20% 100%, rgba(240, 202, 141, 0.5), transparent 28%),
+        radial-gradient(circle at 78% 100%, rgba(225, 165, 110, 0.34), transparent 24%);
+    }
+
+    a {
+      color: inherit;
+    }
+
+    button,
+    input,
+    select {
+      font: inherit;
+    }
+
+    .page-shell {
+      width: min(1160px, calc(100vw - 32px));
+      margin: 0 auto;
+      padding: 32px 0 56px;
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      padding: 34px;
+      border: 1px solid rgba(255, 236, 208, 0.22);
+      border-radius: 34px;
+      background:
+        linear-gradient(135deg, rgba(255, 243, 223, 0.96), rgba(251, 230, 189, 0.74) 48%, rgba(250, 212, 156, 0.5)),
+        rgba(255, 255, 255, 0.18);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(14px) saturate(120%);
+    }
+
+    .hero::before,
+    .hero::after {
+      content: "";
+      position: absolute;
+      pointer-events: none;
+    }
+
+    .hero::before {
+      inset: 22px auto auto 28px;
+      width: 210px;
+      height: 210px;
+      border-radius: 50%;
+      border: 1px dashed rgba(255, 238, 211, 0.45);
+      opacity: 0.55;
+    }
+
+    .hero::after {
+      inset: auto -90px -110px auto;
+      width: 320px;
+      height: 320px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(250, 209, 131, 0.42), transparent 68%);
+    }
+
+    .hero-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(260px, 360px);
+      gap: 28px;
+      align-items: center;
+    }
+
+    .hero-copyblock {
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-scene {
+      position: relative;
+      min-height: 330px;
+    }
+
+    .scene-orbit,
+    .scene-orbit::before {
+      position: absolute;
+      border-radius: 50%;
+    }
+
+    .scene-orbit {
+      inset: 24px 28px 24px 42px;
+      border: 1px dashed rgba(119, 91, 55, 0.22);
+    }
+
+    .scene-orbit::before {
+      content: "";
+      inset: 18px;
+      border: 1px dashed rgba(119, 91, 55, 0.16);
+    }
+
+    .hero-star {
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--star);
+      box-shadow: 0 0 18px rgba(255, 244, 196, 0.9);
+      animation: twinkle 3.6s ease-in-out infinite;
+    }
+
+    .hero-star.s1 {
+      top: 32px;
+      right: 48px;
+    }
+
+    .hero-star.s2 {
+      top: 84px;
+      left: 26px;
+      width: 4px;
+      height: 4px;
+      animation-delay: 0.8s;
+    }
+
+    .hero-star.s3 {
+      right: 92px;
+      bottom: 72px;
+      width: 5px;
+      height: 5px;
+      animation-delay: 1.4s;
+    }
+
+    .hero-star.s4 {
+      left: 90px;
+      bottom: 38px;
+      width: 4px;
+      height: 4px;
+      animation-delay: 2.1s;
+    }
+
+    .hero-fox {
+      position: absolute;
+      right: 22px;
+      bottom: 12px;
+      width: 250px;
+      aspect-ratio: 1 / 1;
+      border-radius: 34px;
+      overflow: hidden;
+      box-shadow:
+        0 28px 54px rgba(60, 35, 16, 0.24),
+        inset 0 1px 0 rgba(255, 255, 255, 0.42);
+      animation: floatPlanet 7s ease-in-out infinite;
+    }
+
+    .hero-fox::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background: linear-gradient(180deg, rgba(255, 244, 213, 0.16), rgba(118, 72, 43, 0.12));
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .hero-fox img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+    }
+
+    .eyebrow {
+      margin: 0 0 10px;
+      color: var(--accent);
+      letter-spacing: 0.16em;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    h1,
+    h2,
+    h3 {
+      margin: 0;
+      font-family: "Baskerville", "Iowan Old Style", "Palatino Linotype", "Noto Serif TC", serif;
+      font-weight: 700;
+      line-height: 1.05;
+    }
+
+    h1 {
+      max-width: 10ch;
+      font-size: clamp(42px, 8vw, 80px);
+    }
+
+    .hero-copy {
+      max-width: 36rem;
+      margin-top: 16px;
+      color: rgba(60, 43, 28, 0.78);
+      font-size: 17px;
+      line-height: 1.85;
+    }
+
+    .summary-grid,
+    .family-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 16px;
+      margin-top: 28px;
+    }
+
+    .metric-card,
+    .family-card,
+    .panel {
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      background: var(--panel);
+      backdrop-filter: blur(10px);
+    }
+
+    .metric-card {
+      padding: 20px;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.42);
+    }
+
+    .metric-label {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .metric-value {
+      margin-top: 8px;
+      font-size: clamp(28px, 4vw, 38px);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      color: #2f261f;
+    }
+
+    .metric-note {
+      margin-top: 6px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .family-card {
+      position: relative;
+      overflow: hidden;
+      padding: 20px;
+      box-shadow: 0 18px 36px rgba(15, 17, 33, 0.08);
+    }
+
+    .family-card::before {
+      content: "";
+      position: absolute;
+      inset: auto -30px -50px auto;
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      background: radial-gradient(circle, color-mix(in srgb, var(--tone) 30%, white), transparent 70%);
+      opacity: 0.55;
+    }
+
+    .family-card h3 {
+      position: relative;
+      z-index: 1;
+      font-size: 28px;
+    }
+
+    .family-meta {
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .family-price {
+      margin-top: 14px;
+      font-size: 30px;
+      font-weight: 700;
+    }
+
+    .family-link {
+      display: inline-flex;
+      margin-top: 12px;
+      color: var(--tone);
+      font-size: 14px;
+      text-decoration: none;
+      position: relative;
+      z-index: 1;
+    }
+
+    .panel {
+      margin-top: 22px;
+      padding: 24px;
+      box-shadow: 0 24px 44px rgba(10, 17, 35, 0.08);
+    }
+
+    .panel-header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 14px;
+      align-items: end;
+    }
+
+    .panel-copy {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .controls {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr 1fr 1fr 1fr 1fr 1fr;
+      gap: 14px;
+      margin-top: 18px;
+    }
+
+    .control-block {
+      padding: 15px;
+      border: 1px solid rgba(108, 82, 49, 0.14);
+      border-radius: 22px;
+      background: var(--panel-strong);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
+    }
+
+    .control-label {
+      margin-bottom: 10px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .pricing-switch {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      width: 100%;
+      padding: 12px 14px;
+      cursor: pointer;
+      box-sizing: border-box;
+    }
+
+    .pricing-switch input {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .pricing-switch-track {
+      position: relative;
+      flex: 0 0 auto;
+      width: 50px;
+      height: 30px;
+      border-radius: 999px;
+      background: rgba(147, 122, 92, 0.26);
+      transition: background 180ms ease;
+    }
+
+    .pricing-switch-track::before {
+      content: "";
+      position: absolute;
+      top: 3px;
+      left: 3px;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: #fffaf1;
+      box-shadow: 0 8px 18px rgba(43, 34, 23, 0.18);
+      transition: transform 180ms ease;
+    }
+
+    .pricing-switch input:checked + .pricing-switch-track {
+      background: linear-gradient(180deg, #e7c777, #cfa04a);
+    }
+
+    .pricing-switch input:checked + .pricing-switch-track::before {
+      transform: translateX(20px);
+    }
+
+    .pricing-switch-copy {
+      display: grid;
+      gap: 2px;
+    }
+
+    .pricing-switch-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--ink);
+    }
+
+    .pricing-switch-note {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.4;
+    }
+
+    .metric-card.is-toggle {
+      display: flex;
+      align-items: center;
+      min-height: 100%;
+    }
+
+    .family-filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .family-filter {
+      padding: 11px 16px;
+      border: 1px solid rgba(95, 74, 46, 0.15);
+      border-radius: 999px;
+      background: rgba(255, 252, 245, 0.9);
+      color: var(--ink);
+      cursor: pointer;
+      transition: transform 180ms ease, border-color 180ms ease, background 180ms ease;
+    }
+
+    .family-filter:hover,
+    .family-filter:focus-visible {
+      transform: translateY(-1px);
+      border-color: rgba(60, 42, 24, 0.3);
+    }
+
+    .family-filter.is-active {
+      background: linear-gradient(180deg, rgba(255, 239, 205, 0.95), rgba(247, 225, 175, 0.86));
+      border-color: rgba(217, 164, 65, 0.46);
+    }
+
+    .control-input,
+    .control-select {
+      width: 100%;
+      padding: 13px 14px;
+      border: 1px solid rgba(95, 74, 46, 0.14);
+      border-radius: 16px;
+      background: rgba(255, 253, 247, 0.98);
+      color: var(--ink);
+    }
+
+    .result-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+
+    .result-count {
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    .comparison-table {
+      display: grid;
+      gap: 12px;
+    }
+
+    .table-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1.5fr) minmax(120px, 0.6fr) minmax(0, 1.1fr);
+      gap: 14px;
+      align-items: start;
+      padding: 20px;
+      border: 1px solid rgba(115, 84, 51, 0.12);
+      border-radius: 24px;
+      background: linear-gradient(180deg, rgba(255, 250, 242, 0.9), rgba(255, 246, 232, 0.84));
+      box-shadow: 0 18px 32px rgba(16, 18, 32, 0.06);
+    }
+
+    .table-row.table-head {
+      position: sticky;
+      top: 10px;
+      z-index: 2;
+      padding: 15px 18px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      background: rgba(255, 244, 220, 0.86);
+      backdrop-filter: blur(12px);
+    }
+
+    .product-name {
+      font-size: 23px;
+    }
+
+    .product-subtitle {
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .product-visual {
+      margin-top: 16px;
+      max-width: 180px;
+    }
+
+    .product-visual img {
+      width: 100%;
+      height: auto;
+      display: block;
+      object-fit: contain;
+      filter: drop-shadow(0 12px 24px rgba(44, 36, 27, 0.12));
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      padding: 7px 11px;
+      border-radius: 999px;
+      background: rgba(99, 78, 53, 0.08);
+      color: var(--ink);
+      font-size: 12px;
+      line-height: 1;
+      white-space: nowrap;
+    }
+
+    .tag.is-tone {
+      background: color-mix(in srgb, var(--tone) 14%, white);
+      color: color-mix(in srgb, var(--tone) 74%, black);
+    }
+
+    .price-cell {
+      font-size: 31px;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+    }
+
+    .spec-list {
+      display: grid;
+      gap: 8px;
+    }
+
+    .spec-item {
+      display: grid;
+      gap: 2px;
+    }
+
+    .spec-kicker {
+      color: var(--muted);
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .spec-value {
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .compare-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+      align-items: start;
+      margin-top: 18px;
+    }
+
+    .compare-card {
+      padding: 0;
+      border: 0;
+      border-radius: 0;
+      background: transparent;
+      box-shadow: none;
+    }
+
+    .compare-card .control-block {
+      height: 100%;
+    }
+
+    .compare-card .control-label {
+      margin-bottom: 12px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .compare-fields {
+      display: grid;
+      gap: 12px;
+    }
+
+    .compare-field {
+      display: grid;
+      gap: 8px;
+    }
+
+    .compare-field .control-label {
+      margin-bottom: 0;
+      font-size: 12px;
+    }
+
+    .compare-heading {
+      margin-bottom: 14px;
+      border: 1px solid rgba(115, 84, 51, 0.12);
+      border-radius: 22px;
+      background: var(--panel-strong);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
+    }
+
+    .compare-kicker {
+      color: var(--ink);
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .compare-price-block {
+      margin-top: 8px;
+      padding: 16px 18px;
+      border: 1px solid rgba(115, 84, 51, 0.12);
+      border-radius: 20px;
+      background: linear-gradient(180deg, rgba(255, 250, 242, 0.92), rgba(255, 246, 232, 0.86));
+      box-shadow: 0 14px 24px rgba(16, 18, 32, 0.04);
+    }
+
+    .compare-price-label {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .compare-price-value {
+      margin-top: 6px;
+      font-size: 32px;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+    }
+
+    .empty-state {
+      padding: 32px 20px;
+      border: 1px dashed rgba(115, 84, 51, 0.22);
+      border-radius: 22px;
+      color: var(--muted);
+      text-align: center;
+      background: rgba(255, 251, 243, 0.58);
+    }
+
+    @keyframes twinkle {
+
+      0%,
+      100% {
+        opacity: 0.35;
+        transform: scale(0.9);
+      }
+
+      50% {
+        opacity: 1;
+        transform: scale(1.15);
+      }
+    }
+
+    @keyframes floatPlanet {
+
+      0%,
+      100% {
+        transform: translateY(0px) rotate(-2deg);
+      }
+
+      50% {
+        transform: translateY(-8px) rotate(1deg);
+      }
+    }
+
+    @media (max-width: 1100px) {
+
+      .summary-grid,
+      .family-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .controls {
+        grid-template-columns: 1fr;
+      }
+
+      .compare-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-scene {
+        min-height: 260px;
+      }
+
+      .table-row,
+      .table-row.table-head {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+    }
+
+    @media (max-width: 760px) {
+      .page-shell {
+        width: min(100vw - 20px, 1160px);
+        padding-top: 18px;
+      }
+
+      .hero,
+      .panel {
+        padding: 18px;
+      }
+
+      .hero-scene {
+        min-height: 220px;
+      }
+
+      .hero-fox {
+        right: 14px;
+        width: 190px;
+        border-radius: 28px;
+      }
+
+      .summary-grid,
+      .family-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .table-row,
+      .table-row.table-head {
+        grid-template-columns: 1fr;
+      }
+
+      .table-row.table-head {
+        display: none;
+      }
+
+      .product-name {
+        font-size: 20px;
+      }
+
+      .price-cell {
+        font-size: 26px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="page-shell">
+    <section class="hero">
+      <div class="hero-layout">
+        <div class="hero-copyblock">
+          <p class="eyebrow">P207 Mac Atlas</p>
+          <h1>找出最適合你的 Mac</h1>
+        </div>
+        <div class="hero-scene" aria-hidden="true">
+          <div class="scene-orbit"></div>
+          <span class="hero-star s1"></span>
+          <span class="hero-star s2"></span>
+          <span class="hero-star s3"></span>
+          <span class="hero-star s4"></span>
+          <div class="hero-fox">
+            <img src="./image/fox.jpeg" alt="P207 fox illustration">
+          </div>
+        </div>
+      </div>
+      <div class="summary-grid" id="summaryGrid"></div>
+    </section>
+
+    <section class="family-grid" id="familyGrid"></section>
+
+    <section class="panel">
+      <div class="panel-header">
+        <div>
+          <h2>篩選與排序</h2>
+          <p class="panel-copy">可依系列、預算、尺寸、CPU 型號、記憶體與 SSD 縮小範圍，再用價格排序。</p>
+        </div>
+      </div>
+      <div class="controls">
+        <div class="control-block">
+          <div class="control-label">系列</div>
+          <div class="family-filters" id="familyFilters"></div>
+        </div>
+        <label class="control-block">
+          <div class="control-label">預算上限</div>
+          <input class="control-input" id="budgetInput" type="number" inputmode="numeric" min="0" step="100"
+            placeholder="">
+        </label>
+        <label class="control-block">
+          <div class="control-label">尺寸</div>
+          <select class="control-select" id="sizeSelect">
+            <option value="all">全部</option>
+          </select>
+        </label>
+        <label class="control-block">
+          <div class="control-label">CPU 型號</div>
+          <select class="control-select" id="chipSelect">
+            <option value="all">全部</option>
+          </select>
+        </label>
+        <label class="control-block">
+          <div class="control-label">記憶體</div>
+          <select class="control-select" id="memorySelect">
+            <option value="all">全部</option>
+          </select>
+        </label>
+        <label class="control-block">
+          <div class="control-label">SSD</div>
+          <select class="control-select" id="storageSelect">
+            <option value="all">全部</option>
+          </select>
+        </label>
+        <label class="control-block">
+          <div class="control-label">排序</div>
+          <select class="control-select" id="sortSelect">
+            <option value="price-asc">低到高</option>
+            <option value="price-desc">高到低</option>
+          </select>
+        </label>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="panel-header">
+        <div>
+          <h2>雙機比較</h2>
+          <p class="panel-copy">分別選擇兩台 Mac 的機型、CPU / GPU、記憶體與 SSD，直接並排比較。</p>
+        </div>
+      </div>
+      <div id="compareSection"></div>
+    </section>
+
+    <section class="panel">
+      <div class="result-meta">
+        <div>
+          <h2>比較清單</h2>
+          <div class="result-count" id="resultCount"></div>
+        </div>
+      </div>
+      <div class="comparison-table" id="resultsTable"></div>
+    </section>
+  </main>
+
+  <script>
+    const FAMILY_ORDER = { "macbook-neo": 0, "macbook-air": 1, "macbook-pro": 2 };
+    const FAMILY_TONES = {
+      "macbook-air": "var(--air)",
+      "macbook-pro": "var(--pro)",
+      "macbook-neo": "var(--neo)",
+    };
+    const CHIP_IMAGE_MAP = {
+      "A18 Pro": "./image/A18%20Pro.png",
+      "M5": "./image/M5.png",
+      "M5 Pro": "./image/M5%20Pro.png",
+      "M5 Max": "./image/M5%20Max.png",
+    };
+    const MEMORY_CODE_MAP = {
+      "macbook-air": {
+        "065-CK9N": "16GB",
+        "065-CK9P": "24GB",
+        "065-CK9Q": "32GB",
+        "065-CKMY": "16GB",
+        "065-CKN0": "24GB",
+        "065-CKN1": "32GB",
+      },
+      "macbook-pro": {
+        "065-CK57": "16GB",
+        "065-CKX1": "24GB",
+        "065-CKX2": "36GB",
+        "065-CKX3": "48GB",
+        "065-CL4Q": "24GB",
+        "065-CL4T": "36GB",
+        "065-CL4W": "36GB",
+        "065-CL4X": "48GB",
+      },
+      "macbook-neo": {
+        "065-CLMP": "8GB",
+      },
+    };
+    const STORAGE_CODE_MAP = {
+      "macbook-air": {
+        "065-CK9T": "512GB",
+        "065-CK9V": "1TB",
+        "065-CK9W": "2TB",
+        "065-CK9X": "4TB",
+        "065-CKN2": "512GB",
+        "065-CKN3": "1TB",
+        "065-CKN4": "2TB",
+        "065-CKN5": "4TB",
+      },
+      "macbook-pro": {
+        "065-CK5F": "1TB",
+        "065-CKX7": "1TB",
+        "065-CL52": "1TB",
+        "065-CKX8": "2TB",
+        "065-CL53": "2TB",
+      },
+      "macbook-neo": {
+        "065-CLMQ": "256GB",
+        "065-CLMT": "512GB",
+      },
+    };
+
+    const state = {
+      data: null,
+      family: "all",
+      size: "all",
+      chip: "all",
+      memory: "all",
+      storage: "all",
+      sort: "price-asc",
+      budget: null,
+      educationPricing: false,
+      compare: {
+        left: null,
+        right: null,
+      },
+    };
+
+    const els = {
+      summaryGrid: document.querySelector("#summaryGrid"),
+      familyGrid: document.querySelector("#familyGrid"),
+      familyFilters: document.querySelector("#familyFilters"),
+      sizeSelect: document.querySelector("#sizeSelect"),
+      chipSelect: document.querySelector("#chipSelect"),
+      memorySelect: document.querySelector("#memorySelect"),
+      storageSelect: document.querySelector("#storageSelect"),
+      budgetInput: document.querySelector("#budgetInput"),
+      sortSelect: document.querySelector("#sortSelect"),
+      compareSection: document.querySelector("#compareSection"),
+      resultCount: document.querySelector("#resultCount"),
+      resultsTable: document.querySelector("#resultsTable"),
+    };
+
+    document.addEventListener("DOMContentLoaded", init);
+
+    async function init() {
+      bindEvents();
+      try {
+        state.data = enrichDerivedSpecs(await loadData());
+        initializeCompareState();
+        render();
+      } catch (error) {
+        renderLoadError();
+      }
+    }
+
+    async function loadData() {
+      const response = await fetch("./data/macbooks_specs_price.json", { cache: "no-store" });
+      if (!response.ok) {
+        throw new Error(`fetch failed: ${response.status}`);
+      }
+      const raw = await response.json();
+      return buildPageData(raw);
+    }
+
+    function buildPageData(raw) {
+      if (Array.isArray(raw?.families)) {
+        return buildPageDataFromLegacyProducts(raw);
+      }
+
+      return buildPageDataFromSpecsPrice(raw);
+    }
+
+    function buildPageDataFromLegacyProducts(raw) {
+      function formatChipCode(chip) {
+        if (!chip) {
+          return "";
+        }
+        const lower = String(chip).toLowerCase();
+        if (lower === "m5") {
+          return "M5";
+        }
+        if (lower === "m5pro") {
+          return "M5 Pro";
+        }
+        if (lower === "m5max") {
+          return "M5 Max";
+        }
+        return String(chip).toUpperCase();
+      }
+
+      function firstMatch(text, regex) {
+        const match = String(text || "").match(regex);
+        return match ? match[0].trim() : "";
+      }
+
+      return {
+        extractedAt: raw.extractedAt,
+        currency: raw.currency,
+        families: raw.families.map((family) => ({
+          slug: family.slug,
+          family: family.family,
+          lowPrice: family.aggregateOffer.lowPrice,
+          highPrice: family.aggregateOffer.highPrice,
+          educationLowPrice: family.aggregateOffer.lowPrice,
+          educationHighPrice: family.aggregateOffer.highPrice,
+          productCount: family.productCount,
+          sourceUrl: family.sourceUrl,
+          educationSourceUrl: family.sourceUrl,
+          items: family.products.map((product, index) => {
+            const dims = product.dimensions || {};
+            const screen = dims["chassis-dimensionScreensize"];
+            const chipDim = dims["processor-dimensionChip"];
+            const cpuGpuDim =
+              dims["processor-cpuCoreCount-gpuCoreCount"] ||
+              dims["processor-dimensionChip-cpuCoreCount-gpuCoreCount"];
+            const memoryDim = dims["memory-dimensionMemory"];
+            const storageDim = dims["storage-dimensionCapacity"];
+            const colorDim = dims["chassis-dimensionColor"];
+            const finishDim = dims["display-dimensionFinish"];
+            const components = cpuGpuDim?.dimensionComponents || {};
+            const memoryCode = product.productConfiguration?.memory || "";
+            const storageCode = product.productConfiguration?.storage || "";
+
+            return {
+              id: `${family.slug}-${index + 1}`,
+              familySlug: family.slug,
+              name: family.family,
+              price: product.price.amount,
+              educationPrice: product.price.amount,
+              screenSize: firstMatch(screen?.header || screen?.label, /\d+\s*吋/),
+              chip:
+                formatChipCode(components.dimensionChip) ||
+                firstMatch(chipDim?.header || chipDim?.label, /M\d(?:\s?(?:Pro|Max))?/i),
+              cpuGpu:
+                components.cpuCoreCount && components.gpuCoreCount
+                  ? `${components.cpuCoreCount}C CPU / ${components.gpuCoreCount}C GPU`
+                  : firstMatch(cpuGpuDim?.header || cpuGpuDim?.label, /\d+\s*核心\s*CPU[、,\s]+\d+\s*核心\s*GPU/),
+              color: colorDim?.header || colorDim?.label || "",
+              finish: finishDim ? (finishDim.header || finishDim.label).split(/\s+/)[0] : "",
+              memory:
+                firstMatch(memoryDim?.header || memoryDim?.label, /\d+(?:GB|TB)/i) ||
+                MEMORY_CODE_MAP[family.slug]?.[memoryCode] ||
+                "",
+              storage:
+                firstMatch(storageDim?.header || storageDim?.label, /\d+(?:GB|TB)/i) ||
+                STORAGE_CODE_MAP[family.slug]?.[storageCode] ||
+                "",
+              partNumber: product.partNumber || "",
+            };
+          }),
+        })),
+      };
+    }
+
+    function buildPageDataFromSpecsPrice(raw) {
+      const familyNameMap = {
+        neo: "MacBook Neo",
+        air: "MacBook Air",
+        pro: "MacBook Pro",
+      };
+      const familySlugMap = {
+        neo: "macbook-neo",
+        air: "macbook-air",
+        pro: "macbook-pro",
+      };
+      const sourceUrlMap = new Map(
+        Array.isArray(raw?.來源)
+          ? raw.來源
+            .filter((entry) => entry?.產品 && entry?.網址)
+            .map((entry) => [String(entry.產品), String(entry.網址)])
+          : [],
+      );
+      const groupedFamilies = new Map();
+
+      for (const product of Array.isArray(raw?.資料) ? raw.資料 : []) {
+        const familyCode = String(product?.產品代號 || "").trim().toLowerCase();
+        const familySlug = familySlugMap[familyCode];
+        if (!familySlug) {
+          continue;
+        }
+
+        const familyName = familyNameMap[familyCode] || String(product?.產品 || "").trim() || familySlug;
+        if (!groupedFamilies.has(familySlug)) {
+          groupedFamilies.set(familySlug, {
+            slug: familySlug,
+            family: familyName,
+            lowPrice: Number.POSITIVE_INFINITY,
+            highPrice: Number.NEGATIVE_INFINITY,
+            educationLowPrice: Number.POSITIVE_INFINITY,
+            educationHighPrice: Number.NEGATIVE_INFINITY,
+            productCount: 0,
+            sourceUrl: String(product?.商品網址 || "").trim() || sourceUrlMap.get(familyName) || "",
+            educationSourceUrl: String(product?.教育價網址 || "").trim() || String(product?.商品網址 || "").trim() || sourceUrlMap.get(familyName) || "",
+            items: [],
+          });
+        }
+
+        const family = groupedFamilies.get(familySlug);
+        const price = Number(product?.價格);
+        const educationPrice = Number(product?.教育價);
+        if (!Number.isFinite(price)) {
+          continue;
+        }
+
+        family.lowPrice = Math.min(family.lowPrice, price);
+        family.highPrice = Math.max(family.highPrice, price);
+        family.educationLowPrice = Math.min(family.educationLowPrice, Number.isFinite(educationPrice) ? educationPrice : price);
+        family.educationHighPrice = Math.max(family.educationHighPrice, Number.isFinite(educationPrice) ? educationPrice : price);
+        family.productCount += 1;
+        family.items.push({
+          id: `${familySlug}-${family.productCount}`,
+          familySlug,
+          name: familyName,
+          price,
+          educationPrice: Number.isFinite(educationPrice) ? educationPrice : price,
+          screenSize: product?.螢幕尺寸 ? `${String(product.螢幕尺寸).trim()} 吋` : "",
+          chip: String(product?.["CPU 型號"] || "").trim(),
+          cpuGpu: formatCpuGpuLabel(product?.["CPU/GPU 數量"]),
+          color: "",
+          finish: String(product?.顯示器選項 || "").trim(),
+          memory: String(product?.記憶體 || "").trim(),
+          storage: String(product?.儲存裝置 || "").trim(),
+          partNumber: "",
+        });
+      }
+
+      return {
+        extractedAt: raw?.資料日期 || "",
+        currency: raw?.資料?.find?.((item) => item?.貨幣)?.貨幣 || "TWD",
+        families: [...groupedFamilies.values()]
+          .map((family) => ({
+            ...family,
+            lowPrice: Number.isFinite(family.lowPrice) ? family.lowPrice : 0,
+            highPrice: Number.isFinite(family.highPrice) ? family.highPrice : 0,
+            educationLowPrice: Number.isFinite(family.educationLowPrice) ? family.educationLowPrice : (Number.isFinite(family.lowPrice) ? family.lowPrice : 0),
+            educationHighPrice: Number.isFinite(family.educationHighPrice) ? family.educationHighPrice : (Number.isFinite(family.highPrice) ? family.highPrice : 0),
+          }))
+          .sort(
+            (left, right) =>
+              (FAMILY_ORDER[left.slug] ?? 99) - (FAMILY_ORDER[right.slug] ?? 99) ||
+              left.family.localeCompare(right.family, "zh-Hant"),
+          ),
+      };
+    }
+
+    function formatCpuGpuLabel(value) {
+      const normalized = String(value || "").trim();
+      if (!normalized) {
+        return "";
+      }
+
+      const match = normalized.match(/(\d+)\s*CPU\s*\/\s*(\d+)\s*GPU/i);
+      if (!match) {
+        return normalized;
+      }
+
+      return `${match[1]}C CPU / ${match[2]}C GPU`;
+    }
+
+    function enrichDerivedSpecs(data) {
+      const fallbackChipByFamily = {
+        "macbook-air": "M5",
+        "macbook-neo": "A18 Pro",
+      };
+
+      const fallbackSpecMap = {
+        "macbook-air|13 吋||10C CPU / 8C GPU||35900": { memory: "16GB", storage: "512GB" },
+        "macbook-air|13 吋||10C CPU / 10C GPU||39400": { memory: "16GB", storage: "512GB" },
+        "macbook-air|15 吋||10C CPU / 10C GPU||42900": { memory: "16GB", storage: "512GB" },
+        "macbook-pro|14 吋|M5|10C CPU / 10C GPU|標準顯示器|54900": { memory: "16GB", storage: "1TB" },
+        "macbook-pro|14 吋|M5|10C CPU / 10C GPU|奈米紋理顯示器|60150": { memory: "16GB", storage: "1TB" },
+        "macbook-pro|14 吋|M5 Pro|15C CPU / 16C GPU|標準顯示器|74900": { memory: "24GB", storage: "1TB" },
+        "macbook-pro|14 吋|M5 Pro|15C CPU / 16C GPU|奈米紋理顯示器|80150": { memory: "24GB", storage: "1TB" },
+        "macbook-pro|14 吋|M5 Pro|18C CPU / 20C GPU|標準顯示器|81900": { memory: "24GB", storage: "1TB" },
+        "macbook-pro|14 吋|M5 Pro|18C CPU / 20C GPU|奈米紋理顯示器|87150": { memory: "24GB", storage: "1TB" },
+        "macbook-pro|14 吋|M5 Max|18C CPU / 32C GPU|標準顯示器|119900": { memory: "36GB", storage: "2TB" },
+        "macbook-pro|14 吋|M5 Max|18C CPU / 32C GPU|奈米紋理顯示器|125150": { memory: "36GB", storage: "2TB" },
+        "macbook-pro|14 吋|M5 Max|18C CPU / 40C GPU|標準顯示器|137400": { memory: "48GB", storage: "2TB" },
+        "macbook-pro|14 吋|M5 Max|18C CPU / 40C GPU|奈米紋理顯示器|142650": { memory: "48GB", storage: "2TB" },
+        "macbook-pro|16 吋|M5 Pro|18C CPU / 20C GPU|標準顯示器|89900": { memory: "24GB", storage: "1TB" },
+        "macbook-pro|16 吋|M5 Pro|18C CPU / 20C GPU|奈米紋理顯示器|95150": { memory: "24GB", storage: "1TB" },
+        "macbook-pro|16 吋|M5 Max|18C CPU / 32C GPU|標準顯示器|129900": { memory: "36GB", storage: "2TB" },
+        "macbook-pro|16 吋|M5 Max|18C CPU / 32C GPU|奈米紋理顯示器|135150": { memory: "36GB", storage: "2TB" },
+        "macbook-pro|16 吋|M5 Max|18C CPU / 40C GPU|標準顯示器|147900": { memory: "48GB", storage: "2TB" },
+        "macbook-pro|16 吋|M5 Max|18C CPU / 40C GPU|奈米紋理顯示器|153150": { memory: "48GB", storage: "2TB" },
+        "macbook-neo|||6C CPU / 5C GPU||19900": { screenSize: "13 吋", memory: "8GB", storage: "256GB" },
+        "macbook-neo|||6C CPU / 5C GPU||22900": { screenSize: "13 吋", memory: "8GB", storage: "512GB" },
+      };
+
+      return {
+        ...data,
+        families: data.families.map((family) => ({
+          ...family,
+          items: family.items.map((item) => {
+            const fallbackKey = [
+              item.familySlug,
+              item.screenSize,
+              item.chip,
+              item.cpuGpu,
+              item.finish,
+              item.price,
+            ].join("|");
+            const fallback = fallbackSpecMap[fallbackKey] || {};
+
+            return {
+              ...item,
+              chip: item.chip || fallbackChipByFamily[item.familySlug] || "",
+              screenSize: item.screenSize || fallback.screenSize || "",
+              memory: item.memory || fallback.memory || "",
+              storage: item.storage || fallback.storage || "",
+            };
+          }),
+        })),
+      };
+    }
+
+    function bindEvents() {
+      els.sizeSelect.addEventListener("change", (event) => {
+        state.size = event.target.value;
+        renderSpecFilters();
+        renderResults();
+      });
+
+      els.chipSelect.addEventListener("change", (event) => {
+        state.chip = event.target.value;
+        renderSpecFilters();
+        renderResults();
+      });
+
+      els.memorySelect.addEventListener("change", (event) => {
+        state.memory = event.target.value;
+        renderSpecFilters();
+        renderResults();
+      });
+
+      els.storageSelect.addEventListener("change", (event) => {
+        state.storage = event.target.value;
+        renderSpecFilters();
+        renderResults();
+      });
+
+      els.budgetInput.addEventListener("input", (event) => {
+        const value = Number(event.target.value);
+        state.budget = Number.isFinite(value) && value > 0 ? value : null;
+        renderResults();
+      });
+
+      els.sortSelect.addEventListener("change", (event) => {
+        state.sort = event.target.value;
+        renderResults();
+      });
+
+    }
+
+    function render() {
+      renderSummary();
+      renderFamilyCards();
+      renderFamilyFilters();
+      renderSpecFilters();
+      renderCompareSection();
+      renderResults();
+    }
+
+    function renderLoadError() {
+      els.summaryGrid.innerHTML = `
+          <div class="empty-state">無法讀取 <code>data/macbooks_specs_price.json</code>，請透過本機伺服器開啟此頁，或確認 JSON 檔案存在且可存取。</div>
+        `;
+      els.familyGrid.innerHTML = "";
+      els.familyFilters.innerHTML = "";
+      els.sizeSelect.innerHTML = `<option value="all">全部</option>`;
+      els.chipSelect.innerHTML = `<option value="all">全部</option>`;
+      els.memorySelect.innerHTML = `<option value="all">全部</option>`;
+      els.storageSelect.innerHTML = `<option value="all">全部</option>`;
+      els.compareSection.innerHTML = `<div class="empty-state">目前沒有可比較的資料。</div>`;
+      els.resultCount.textContent = "";
+      els.resultsTable.innerHTML = `
+          <div class="empty-state">目前沒有可顯示的資料。</div>
+        `;
+    }
+
+    function renderSummary() {
+      const low = Math.min(...state.data.families.map((family) => getFamilyLowPrice(family)));
+      const high = Math.max(...state.data.families.map((family) => getFamilyHighPrice(family)));
+
+      const metrics = [
+        { label: "最低入手價", value: formatPrice(low) },
+        { label: "最高旗艦價", value: formatPrice(high) },
+      ];
+
+      els.summaryGrid.innerHTML = metrics
+        .map(
+          (metric) => `
+              <article class="metric-card">
+                <div class="metric-label">${metric.label}</div>
+                <div class="metric-value">${metric.value}</div>
+              </article>
+            `,
+        )
+        .join("") + `
+          <article class="metric-card is-toggle">
+            <label class="pricing-switch" for="educationToggle">
+              <input id="educationToggle" type="checkbox"${state.educationPricing ? " checked" : ""}>
+              <span class="pricing-switch-track" aria-hidden="true"></span>
+              <span class="pricing-switch-copy">
+                <span class="pricing-switch-title">教育價</span>
+                <span class="pricing-switch-note">開啟後以 Apple 教育商店價格比較</span>
+              </span>
+            </label>
+          </article>
+        `;
+
+      els.summaryGrid.querySelector("#educationToggle")?.addEventListener("change", (event) => {
+        state.educationPricing = event.target.checked;
+        render();
+      });
+    }
+
+    function renderFamilyCards() {
+      const comparableFamilies = getComparableFamilies();
+
+      els.familyGrid.innerHTML = sortFamilies(state.data.families)
+        .map((family) => {
+          const tone = FAMILY_TONES[family.slug] || "var(--accent)";
+          const comparableFamily = comparableFamilies.find((entry) => entry.slug === family.slug);
+          return `
+              <article class="family-card" style="--tone:${tone}">
+                <h3>${family.family}</h3>
+                <div class="family-meta">${comparableFamily.items.length} 款規格</div>
+                <div class="family-price">${formatPrice(getFamilyLowPrice(family))} <span style="font-size:16px;color:var(--muted);font-weight:500;">起</span></div>
+                <div class="family-meta">最高 ${formatPrice(getFamilyHighPrice(family))}</div>
+                <a class="family-link" href="${getFamilySourceUrl(family)}" target="_blank" rel="noreferrer">查看 Apple 商店頁面</a>
+              </article>
+            `;
+        })
+        .join("");
+    }
+
+    function renderFamilyFilters() {
+      const options = [{ slug: "all", family: "全部系列" }, ...sortFamilies(state.data.families)];
+      els.familyFilters.innerHTML = options
+        .map((option) => {
+          const isActive = state.family === option.slug;
+          return `
+              <button
+                class="family-filter ${isActive ? "is-active" : ""}"
+                type="button"
+                data-family="${option.slug}"
+                aria-pressed="${String(isActive)}"
+              >
+                ${option.family}
+              </button>
+            `;
+        })
+        .join("");
+
+      [...els.familyFilters.querySelectorAll("button")].forEach((button) => {
+        button.addEventListener("click", () => {
+          state.family = button.dataset.family;
+          renderFamilyFilters();
+          renderSpecFilters();
+          renderResults();
+        });
+      });
+    }
+
+    function renderSpecFilters() {
+      renderSelectOptions({
+        select: els.sizeSelect,
+        stateKey: "size",
+        allLabel: "全部",
+        options: getFilterOptionItems("size").map((item) => item.screenSize).filter(Boolean),
+        sortFn: (left, right) => parseSizeValue(left) - parseSizeValue(right),
+      });
+      renderSelectOptions({
+        select: els.chipSelect,
+        stateKey: "chip",
+        allLabel: "全部",
+        options: getFilterOptionItems("chip").map((item) => item.chip).filter(Boolean),
+        sortFn: compareChipValues,
+      });
+      renderSelectOptions({
+        select: els.memorySelect,
+        stateKey: "memory",
+        allLabel: "全部",
+        options: getFilterOptionItems("memory").map((item) => item.memory).filter(Boolean),
+        sortFn: (left, right) => parseMemoryValue(left) - parseMemoryValue(right),
+      });
+      renderSelectOptions({
+        select: els.storageSelect,
+        stateKey: "storage",
+        allLabel: "全部",
+        options: getFilterOptionItems("storage").map((item) => item.storage).filter(Boolean),
+        sortFn: (left, right) => parseStorageValue(left) - parseStorageValue(right),
+      });
+    }
+
+    function renderSelectOptions({ select, stateKey, allLabel, options, sortFn }) {
+      const uniqueOptions = [...new Set(options)].sort(sortFn);
+
+      if (state[stateKey] !== "all" && !uniqueOptions.includes(state[stateKey])) {
+        state[stateKey] = "all";
+      }
+
+      select.innerHTML = [
+        `<option value="all"${state[stateKey] === "all" ? " selected" : ""}>${allLabel}</option>`,
+        ...uniqueOptions.map(
+          (option) => `<option value="${option}"${state[stateKey] === option ? " selected" : ""}>${option}</option>`,
+        ),
+      ].join("");
+    }
+
+    function getFilterOptionItems(excludeKey) {
+      return getComparableItems().filter((item) => {
+        const familyMatch = state.family === "all" || item.familySlug === state.family;
+        const sizeMatch = excludeKey === "size" || state.size === "all" || item.screenSize === state.size;
+        const chipMatch = excludeKey === "chip" || state.chip === "all" || item.chip === state.chip;
+        const memoryMatch = excludeKey === "memory" || state.memory === "all" || item.memory === state.memory;
+        const storageMatch = excludeKey === "storage" || state.storage === "all" || item.storage === state.storage;
+
+        return familyMatch && sizeMatch && chipMatch && memoryMatch && storageMatch;
+      });
+    }
+
+    function initializeCompareState() {
+      const items = getComparableItems().slice().sort((left, right) => getItemPrice(left) - getItemPrice(right));
+      if (!items.length) {
+        return;
+      }
+
+      const leftItem = items[0];
+      const rightItem =
+        items.find(
+          (item) =>
+            buildCompareModelKey(item) !== buildCompareModelKey(leftItem) ||
+            buildCompareCpuGpuKey(item) !== buildCompareCpuGpuKey(leftItem) ||
+            item.memory !== leftItem.memory ||
+            item.storage !== leftItem.storage,
+        ) ?? items[0];
+
+      state.compare.left = buildCompareSelectionFromItem(leftItem);
+      state.compare.right = buildCompareSelectionFromItem(rightItem);
+      syncCompareSelection("left");
+      syncCompareSelection("right");
+    }
+
+    function renderCompareSection() {
+      if (!state.compare.left || !state.compare.right) {
+        initializeCompareState();
+      }
+
+      syncCompareSelection("left");
+      syncCompareSelection("right");
+
+      const leftItem = getSelectedCompareItem("left");
+      const rightItem = getSelectedCompareItem("right");
+
+      els.compareSection.innerHTML = `
+        <div class="compare-grid">
+          ${renderCompareCard("left", "Mac A", leftItem)}
+          ${renderCompareCard("right", "Mac B", rightItem)}
+        </div>
+      `;
+
+      [...els.compareSection.querySelectorAll("[data-compare-slot][data-compare-field]")].forEach((select) => {
+        select.addEventListener("change", (event) => {
+          const { compareSlot, compareField } = event.target.dataset;
+          const nextValue = event.target.value;
+          const current = state.compare[compareSlot];
+
+          current[compareField] = nextValue;
+          syncCompareSelection(compareSlot);
+          renderCompareSection();
+        });
+      });
+    }
+
+    function renderCompareCard(slot, title, item) {
+      const selection = state.compare[slot] ?? { modelKey: "", cpuGpu: "", memory: "", storage: "" };
+      const modelOptions = getCompareModelOptions();
+      const cpuOptions = getCompareCpuGpuOptions(slot);
+      const memoryOptions = getCompareMemoryOptions(slot);
+      const storageOptions = getCompareStorageOptions(slot);
+
+      return `
+        <article class="compare-card">
+          <div class="control-block compare-heading">
+            <div class="compare-kicker">${title}</div>
+          </div>
+          <div class="compare-fields">
+            ${renderCompareSelect(slot, "modelKey", "機型", modelOptions, selection.modelKey)}
+            ${renderCompareSelect(slot, "cpuGpu", "CPU / GPU", cpuOptions, selection.cpuGpu)}
+            ${renderCompareSelect(slot, "memory", "記憶體", memoryOptions, selection.memory)}
+            ${renderCompareSelect(slot, "storage", "SSD", storageOptions, selection.storage)}
+            <div class="compare-price-block">
+              <div class="compare-price-label">${getCurrentPriceLabel()}</div>
+              <div class="compare-price-value">${item ? formatPrice(getItemPrice(item)) : "—"}</div>
+            </div>
+          </div>
+        </article>
+      `;
+    }
+
+    function renderCompareSelect(slot, field, label, options, value) {
+      const renderedOptions = options.length
+        ? options.map((option) => `<option value="${option.value}"${option.value === value ? " selected" : ""}>${option.label}</option>`).join("")
+        : `<option value="">無可用選項</option>`;
+
+      return `
+        <label class="compare-field">
+          <div class="control-label">${label}</div>
+          <select class="control-select" data-compare-slot="${slot}" data-compare-field="${field}">
+            ${renderedOptions}
+          </select>
+        </label>
+      `;
+    }
+
+    function buildCompareSelectionFromItem(item) {
+      return {
+        modelKey: buildCompareModelKey(item),
+        cpuGpu: buildCompareCpuGpuKey(item),
+        memory: item.memory || "",
+        storage: item.storage || "",
+      };
+    }
+
+    function buildCompareModelKey(item) {
+      return [item.familySlug, item.name, item.screenSize, item.finish].join("|");
+    }
+
+    function buildCompareModelLabel(item) {
+      return [item.name, item.screenSize, item.finish].filter(Boolean).join(" / ");
+    }
+
+    function buildCompareCpuGpuKey(item) {
+      return [item.chip || "", item.cpuGpu || ""].join("|");
+    }
+
+    function buildCompareCpuGpuLabel(item) {
+      return [item.chip, item.cpuGpu].filter(Boolean).join(" / ") || item.cpuGpu || item.chip || "—";
+    }
+
+    function getCompareModelOptions() {
+      const seen = new Set();
+      const options = [];
+
+      for (const item of getComparableItems().slice().sort(compareCompareModelItems)) {
+        const value = buildCompareModelKey(item);
+        if (seen.has(value)) {
+          continue;
+        }
+
+        seen.add(value);
+        options.push({
+          value,
+          label: buildCompareModelLabel(item),
+        });
+      }
+
+      return options;
+    }
+
+    function getCompareCpuGpuOptions(slot) {
+      const seen = new Set();
+      const options = [];
+
+      for (const item of getCompareItemsForSlot(slot, "cpuGpu").slice().sort(compareCompareCpuGpuItems)) {
+        const value = buildCompareCpuGpuKey(item);
+        if (!item.cpuGpu || seen.has(value)) {
+          continue;
+        }
+
+        seen.add(value);
+        options.push({
+          value,
+          label: buildCompareCpuGpuLabel(item),
+        });
+      }
+
+      return options;
+    }
+
+    function getCompareMemoryOptions(slot) {
+      return [...new Set(getCompareItemsForSlot(slot, "memory").map((item) => item.memory).filter(Boolean))]
+        .sort((left, right) => parseMemoryValue(left) - parseMemoryValue(right))
+        .map((value) => ({ value, label: value }));
+    }
+
+    function getCompareStorageOptions(slot) {
+      return [...new Set(getCompareItemsForSlot(slot, "storage").map((item) => item.storage).filter(Boolean))]
+        .sort((left, right) => parseStorageValue(left) - parseStorageValue(right))
+        .map((value) => ({ value, label: value }));
+    }
+
+    function getCompareItemsForSlot(slot, level) {
+      const selection = state.compare[slot];
+      const items = getComparableItems().filter((item) => buildCompareModelKey(item) === selection.modelKey);
+
+      if (level === "cpuGpu") {
+        return items;
+      }
+
+      const byCpu = items.filter((item) => !selection.cpuGpu || buildCompareCpuGpuKey(item) === selection.cpuGpu);
+      if (level === "memory") {
+        return byCpu;
+      }
+
+      const byMemory = byCpu.filter((item) => !selection.memory || item.memory === selection.memory);
+      if (level === "storage") {
+        return byMemory;
+      }
+
+      return byMemory.filter((item) => !selection.storage || item.storage === selection.storage);
+    }
+
+    function getSelectedCompareItem(slot) {
+      return getCompareItemsForSlot(slot, "selected").find((item) => item.storage === state.compare[slot].storage) ?? null;
+    }
+
+    function syncCompareSelection(slot) {
+      const modelOptions = getCompareModelOptions();
+      if (!modelOptions.length) {
+        return;
+      }
+
+      const selection = state.compare[slot] ?? { modelKey: "", cpuGpu: "", memory: "", storage: "" };
+      if (!modelOptions.some((option) => option.value === selection.modelKey)) {
+        selection.modelKey = modelOptions[0].value;
+      }
+
+      const cpuOptions = getCompareCpuGpuOptions(slot);
+      if (!cpuOptions.some((option) => option.value === selection.cpuGpu)) {
+        selection.cpuGpu = cpuOptions[0]?.value ?? "";
+      }
+
+      const memoryOptions = getCompareMemoryOptions(slot);
+      if (!memoryOptions.some((option) => option.value === selection.memory)) {
+        selection.memory = memoryOptions[0]?.value ?? "";
+      }
+
+      const storageOptions = getCompareStorageOptions(slot);
+      if (!storageOptions.some((option) => option.value === selection.storage)) {
+        selection.storage = storageOptions[0]?.value ?? "";
+      }
+
+      state.compare[slot] = selection;
+    }
+
+    function renderResults() {
+      const items = getVisibleItems();
+      const allItems = getComparableItems();
+      const budgetText = state.budget ? `，預算內 ${formatPrice(state.budget)}` : "";
+      els.resultCount.textContent = `目前顯示 ${items.length} / ${allItems.length} 款規格${budgetText}`;
+
+      if (!items.length) {
+        els.resultsTable.innerHTML = `
+            <div class="empty-state">
+              沒有符合目前篩選條件的機型，請調整預算、系列或搜尋關鍵字。
+            </div>
+          `;
+        return;
+      }
+
+      els.resultsTable.innerHTML = `
+          <div class="table-row table-head">
+            <div>機型</div>
+            <div>${getCurrentPriceLabel()}</div>
+            <div>核心規格</div>
+          </div>
+          ${items.map((item) => renderRow(item)).join("")}
+        `;
+    }
+
+    function renderRow(item) {
+      const tone = FAMILY_TONES[item.familySlug] || "var(--accent)";
+      const descriptor = [item.screenSize, item.chip, item.finish, item.memory, item.storage].filter(Boolean).join(" / ");
+      const chipImageSrc = getChipImageSrc(item.chip);
+
+      const specItems = [
+        item.chip ? ["晶片", item.chip] : null,
+        item.cpuGpu ? ["CPU / GPU", item.cpuGpu] : null,
+        item.screenSize ? ["尺寸", item.screenSize] : null,
+        item.finish ? ["顯示器", item.finish] : null,
+        item.memory ? ["記憶體", item.memory] : null,
+        item.storage ? ["SSD", item.storage] : null,
+      ].filter(Boolean);
+
+      return `
+          <article class="table-row" style="--tone:${tone}">
+            <div>
+              <h3 class="product-name">${item.name}</h3>
+              <div class="product-subtitle">${descriptor || "以目前 JSON 欄位顯示預設比較資料。"}</div>
+              ${chipImageSrc ? `<div class="product-visual"><img src="${chipImageSrc}" alt="${item.chip}"></div>` : ""}
+            </div>
+            <div>
+              <div class="price-cell">${formatPrice(getItemPrice(item))}</div>
+            </div>
+            <div class="spec-list">
+              ${specItems
+          .map(
+            ([label, value]) => `
+                    <div class="spec-item">
+                      <div class="spec-kicker">${label}</div>
+                      <div class="spec-value">${value}</div>
+                    </div>
+                  `,
+          )
+          .join("")}
+            </div>
+          </article>
+        `;
+    }
+
+    function getAllItems() {
+      return state.data.families.flatMap((family) =>
+        family.items.map((item) => ({
+          ...item,
+          family: family.family,
+          sourceUrl: family.sourceUrl,
+        })),
+      );
+    }
+
+    function buildComparableKey(item) {
+      return [
+        item.familySlug,
+        item.name,
+        item.price,
+        item.screenSize,
+        item.chip,
+        item.cpuGpu,
+        item.memory,
+        item.finish,
+        item.storage,
+      ].join("|");
+    }
+
+    function groupComparableItems(items) {
+      const grouped = new Map();
+
+      for (const item of items) {
+        const key = buildComparableKey(item);
+        const existing = grouped.get(key);
+
+        if (existing) {
+          if (item.color && !existing.colors.includes(item.color)) {
+            existing.colors.push(item.color);
+          }
+          if (item.partNumber && !existing.partNumbers.includes(item.partNumber)) {
+            existing.partNumbers.push(item.partNumber);
+          }
+          continue;
+        }
+
+        grouped.set(key, {
+          ...item,
+          colors: item.color ? [item.color] : [],
+          partNumbers: item.partNumber ? [item.partNumber] : [],
+        });
+      }
+
+      return [...grouped.values()];
+    }
+
+    function getComparableFamilies() {
+      return sortFamilies(state.data.families).map((family) => ({
+        ...family,
+        items: groupComparableItems(
+          family.items.map((item) => ({
+            ...item,
+            family: family.family,
+            sourceUrl: family.sourceUrl,
+          })),
+        ),
+      }));
+    }
+
+    function getComparableItems() {
+      return getComparableFamilies().flatMap((family) => family.items);
+    }
+
+    function sortFamilies(families) {
+      return [...families].sort(
+        (left, right) =>
+          (FAMILY_ORDER[left.slug] ?? 99) - (FAMILY_ORDER[right.slug] ?? 99) ||
+          left.family.localeCompare(right.family, "zh-Hant"),
+      );
+    }
+
+    function getVisibleItems() {
+      const list = getComparableItems().filter((item) => {
+        const familyMatch = state.family === "all" || item.familySlug === state.family;
+        const sizeMatch = state.size === "all" || item.screenSize === state.size;
+        const chipMatch = state.chip === "all" || item.chip === state.chip;
+        const memoryMatch = state.memory === "all" || item.memory === state.memory;
+        const storageMatch = state.storage === "all" || item.storage === state.storage;
+        const currentPrice = getItemPrice(item);
+
+        return familyMatch && sizeMatch && chipMatch && memoryMatch && storageMatch && (state.budget == null || currentPrice <= state.budget);
+      });
+
+      return list.sort((left, right) => compareItems(left, right, state.sort));
+    }
+
+    function compareItems(left, right, mode) {
+      if (mode === "price-desc") {
+        return getItemPrice(right) - getItemPrice(left);
+      }
+
+      return getItemPrice(left) - getItemPrice(right);
+    }
+
+    function compareCompareModelItems(left, right) {
+      return (
+        (FAMILY_ORDER[left.familySlug] ?? 99) - (FAMILY_ORDER[right.familySlug] ?? 99) ||
+        parseSizeValue(left.screenSize) - parseSizeValue(right.screenSize) ||
+        parseFinishValue(left.finish) - parseFinishValue(right.finish) ||
+        String(left.finish || "").localeCompare(String(right.finish || ""), "zh-Hant") ||
+        getItemPrice(left) - getItemPrice(right)
+      );
+    }
+
+    function compareCompareCpuGpuItems(left, right) {
+      return (
+        parseCpuGpuValue(left.cpuGpu) - parseCpuGpuValue(right.cpuGpu) ||
+        String(left.chip || "").localeCompare(String(right.chip || ""), "zh-Hant") ||
+        getItemPrice(left) - getItemPrice(right)
+      );
+    }
+
+    function getItemPrice(item) {
+      if (state.educationPricing && Number.isFinite(item?.educationPrice)) {
+        return item.educationPrice;
+      }
+
+      return item?.price ?? 0;
+    }
+
+    function getFamilyLowPrice(family) {
+      if (state.educationPricing && Number.isFinite(family?.educationLowPrice)) {
+        return family.educationLowPrice;
+      }
+
+      return family?.lowPrice ?? 0;
+    }
+
+    function getFamilyHighPrice(family) {
+      if (state.educationPricing && Number.isFinite(family?.educationHighPrice)) {
+        return family.educationHighPrice;
+      }
+
+      return family?.highPrice ?? 0;
+    }
+
+    function getFamilySourceUrl(family) {
+      if (state.educationPricing && family?.educationSourceUrl) {
+        return family.educationSourceUrl;
+      }
+
+      return family?.sourceUrl || family?.educationSourceUrl || "#";
+    }
+
+    function getCurrentPriceLabel() {
+      return state.educationPricing ? "教育價" : "價格";
+    }
+
+    function formatPrice(value) {
+      return new Intl.NumberFormat("zh-TW", {
+        style: "currency",
+        currency: state.data?.currency || "TWD",
+        maximumFractionDigits: 0,
+      }).format(value);
+    }
+
+    function getChipImageSrc(chip) {
+      return CHIP_IMAGE_MAP[String(chip || "").trim()] || "";
+    }
+
+    function parseMemoryValue(value) {
+      const match = String(value || "").match(/(\d+)/);
+      return match ? Number(match[1]) : Number.POSITIVE_INFINITY;
+    }
+
+    function parseStorageValue(value) {
+      const match = String(value || "").match(/(\d+)(TB|GB)/i);
+      if (!match) {
+        return Number.POSITIVE_INFINITY;
+      }
+      const amount = Number(match[1]);
+      return match[2].toUpperCase() === "TB" ? amount * 1024 : amount;
+    }
+
+    function parseSizeValue(value) {
+      const match = String(value || "").match(/(\d+)/);
+      return match ? Number(match[1]) : Number.POSITIVE_INFINITY;
+    }
+
+    function compareChipValues(left, right) {
+      const leftWeight = chipSortWeight(left);
+      const rightWeight = chipSortWeight(right);
+      return leftWeight - rightWeight || String(left || "").localeCompare(String(right || ""), "zh-Hant");
+    }
+
+    function chipSortWeight(value) {
+      const normalized = String(value || "").trim();
+      if (!normalized) {
+        return Number.POSITIVE_INFINITY;
+      }
+
+      const match = normalized.match(/^([MA])(\d+)(?:\s+(Pro|Max))?$/i);
+      if (!match) {
+        return Number.POSITIVE_INFINITY;
+      }
+
+      const familyBase = match[1].toUpperCase() === "A" ? 0 : 1000;
+      const generation = Number(match[2]) * 10;
+      const suffix = match[3] ? (match[3].toLowerCase() === "pro" ? 1 : 2) : 0;
+      return familyBase + generation + suffix;
+    }
+
+    function parseFinishValue(value) {
+      const normalized = String(value || "").trim();
+      if (!normalized) {
+        return 0;
+      }
+      if (normalized === "標準顯示器") {
+        return 1;
+      }
+      if (normalized === "奈米紋理顯示器") {
+        return 2;
+      }
+      return 9;
+    }
+
+    function parseCpuGpuValue(value) {
+      const match = String(value || "").match(/(\d+)C CPU\s*\/\s*(\d+)C GPU/i);
+      if (!match) {
+        return Number.POSITIVE_INFINITY;
+      }
+      return Number(match[1]) * 100 + Number(match[2]);
+    }
+  </script>
+</body>
+
+</html>
